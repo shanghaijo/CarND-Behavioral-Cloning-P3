@@ -150,5 +150,7 @@ I finally randomly shuffled the data set and put 20% of the data into a validati
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 50 as evidenced by the fact that with 30 epochs, the car went off road in the track 2 run while if I used 88 or 100 epochs, the car was running track 2 very well but ended up driving on the right side of the road for track 1 or quite erratically, like drunken drive. I would guess that overlearing track 2 the car learned to stay on the right side of the track instead of being in the middle of its track.
 
-Next steps, I would like to use grayscale to see if I can decrease the number of epochs, I also want to try having less data from the easy track where I seem to repeat the same thing (driving in straight line, having a large turn with the same angle).
+Next steps, I would like to use grayscale to see if I can decrease the number of epochs, I also want to try having less data from the easy track where I seem to repeat the same things (driving in straight line, having a large turn with the same angle).
+I plan also on using a fine-tuning approach by reloading existing network. As of today, I only fully trained it.
+
 I used an adam optimizer so that manually training the learning rate wasn't necessary.
