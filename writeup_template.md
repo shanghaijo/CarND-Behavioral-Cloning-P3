@@ -18,13 +18,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/NetworkUsed.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./examples/NetworkUsed.PNG "Model Visualization"
+[image2]: ./examples/right_2017_04_04_14_32_52_687.jpg "Hard track"
+[image3]: ./examples/before.jpg "Recovery Image"
+[image4]: ./examples/middle.jpg "Recovery Image"
+[image8]: ./examples/end.jpg "Recovery Image"
+[image5]: ./examples/cropped.jpg "Cropped image"
+[image6]: ./examples/tobeflipped.jpg "Normal Image"
+[image7]: ./examples/flipped.jpg "Flipped Image"
 
 
 ## Rubric Points
@@ -102,13 +103,13 @@ The car went through both tracks without problems. This can be checked on the vi
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture :
 
 ![alt text][image1]
 
 ####3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first used the data provided with the course. I recorded one lap on the hard track after completing succesfully the first track:
 
 ![alt text][image2]
 
@@ -116,20 +117,25 @@ I then recorded the vehicle recovering from the left side and right sides of the
 
 ![alt text][image3]
 ![alt text][image4]
-![alt text][image5]
+![alt text][image9]
 
-Then I repeated this process on track two in order to get more data points.
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+
+To augment the data sat, I also flipped images so the car would have more sense turning in both direction rather than only on one side:
 
 ![alt text][image6]
 ![alt text][image7]
 
-Etc ....
+I also cropped the image in the cropped layer of the network:
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+![alt text][image5]
+
+After the collection process, I had 50,856 number of data points including right and left cameras. I then preprocessed this data by flipping the center image and got 16,952 more data point. I didn't flip the right and left cameras, it didn't feel useful to do so.
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 50 as evidenced by the fact that with 30 epochs, the car went off road in the track 2 run while if I used 88 or 100 epochs, the car was running track 2 very well but ended up driving on the right side of the road for track 1 or quite erratically, like drunken drive. I would guess that overlearing track 2 the car learned to stay on the right side of the track instead of being in the middle of its track.
+
+Next steps, I would like to use grayscale to see if I can decrease the number of epochs, I also want to try having less data from the easy track where I seem to repeat the same thing (driving in straight line, having a large turn with the same angle).
+I used an adam optimizer so that manually training the learning rate wasn't necessary.
