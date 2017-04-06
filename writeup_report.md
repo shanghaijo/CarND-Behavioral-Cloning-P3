@@ -101,7 +101,20 @@ The car went through both tracks without problems. This can be checked on the vi
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
+- Input is 160 x 320
+- Normalization layer
+- We crop the horizon and the hood of the car for better performances (60 on top, 20 on the bottom)
+- Convolutional 24@79x159 5x5 strides:(2,2) + Relu + dropout 50%
+- Convolutional 36@39x79 5x5 strides:(2,2) + Relu + dropout 50% 
+- Convolutional 48@19x39 5x5 strides:(2,2) + Relu + dropout 50%
+- Convolutional 64@9x19 3x3 + Relu + dropout 50%
+- Convolutional 64@5x10 3x3 + Relu + dropout 50%
+- Flatten
+- Full connected 100 neurons
+- Full connected 50 neurons
+- Full connected 10 neurons
+- Full connected output 1 neuron
 
 Here is a visualization of the architecture :
 
@@ -113,15 +126,15 @@ To capture good driving behavior, I first used the data provided with the course
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to steer to the center when getting to close to the sides. These images show what a recovery looks like starting from the right side back to the center. I only used those in specific places where the car went obviously off road, not on all turns considering it should generalize well, which it did:
 
 ![alt text][image3]
 ![alt text][image4]
-![alt text][image9]
+![alt text][image8]
 
 
 
-To augment the data sat, I also flipped images so the car would have more sense turning in both direction rather than only on one side:
+To augment the data set, I also flipped images so the car would have more sense turning in both direction rather than only on one side:
 
 ![alt text][image6]
 ![alt text][image7]
