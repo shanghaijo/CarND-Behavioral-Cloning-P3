@@ -15,8 +15,7 @@ import cv2
 import numpy as np
 import sklearn
 from PIL import Image
-#import base64
-#from io import BytesIO
+
 
 def generator(samples, batch_size=32):
     num_samples = len(samples)
@@ -30,8 +29,7 @@ def generator(samples, batch_size=32):
             for batch_sample in batch_samples:
                 name = './data/IMG/'+batch_sample[0].split('/')[-1]
                 image = Image.open(name)
-                center_image = np.asarray(image)
-                #center_image = cv2.imread(name)
+                center_image = np.asarray(image)                
                 center_angle = float(batch_sample[3])
                 images.append(center_image)
                 angles.append(center_angle)
@@ -41,18 +39,18 @@ def generator(samples, batch_size=32):
                 center_angle_flipped = -center_angle
                 images.append(center_image_flipped)
                 angles.append(center_angle_flipped)
-
+                # We correct for 0.5 on the right and left images since it provides better results
                 name = './data/IMG/' + batch_sample[1].split('/')[-1]
                 image = Image.open(name)
                 left_image = np.asarray(image)
-                left_angle = float(batch_sample[3]) + 0.2
+                left_angle = float(batch_sample[3]) + 0.5
                 images.append(left_image)
                 angles.append(left_angle)
 
                 name = './data/IMG/' + batch_sample[2].split('/')[-1]
                 image = Image.open(name)
                 right_image = np.asarray(image)
-                right_angle = float(batch_sample[3]) - 0.2
+                right_angle = float(batch_sample[3]) - 0.5
                 images.append(right_image)
                 angles.append(right_angle)
 
@@ -78,9 +76,9 @@ model = Sequential()
 
 # Normalization layer
 model.add(Lambda(lambda x: x/255.0 - 0.5, input_shape = (160, 320, 3)))
+# We crop the horizon and the hood of the car for better performances
 model.add(Cropping2D(cropping=((60, 20), (0, 0))))
 
-#model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(row, col, ch), output_shape=(row, col, ch)))
 #Convolutional 24@79x159
 model.add(Convolution2D(24, 5,5, subsample=(2,2)))
 model.add(Activation('relu'))
@@ -109,8 +107,8 @@ model.add(Dense(1))
 
 
 model.compile(loss='mse', optimizer='adam')
-model.fit_generator(train_generator, samples_per_epoch= len(train_samples*4), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=30)
+model.fit_generator(train_generator, samples_per_epoch= len(train_samples*4), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=50)
 
 from keras.models import load_model
 
-model.save('my_model_test.h5')
+model.save('model.h5')
